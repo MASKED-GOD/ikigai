@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ikigai Result</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Your Ikigai Result</h1>
+        <div id="result" class="result"></div>
+        <button onclick="goBack()">Go Back</button>
+    </div>
+
+    <script>
+        // Retrieve the result from local storage and display it
+        document.addEventListener('DOMContentLoaded', function () {
+            const result = localStorage.getItem('ikigaiResult');
+            if (result) {
+                document.getElementById('result').innerHTML = `<h2>Your Ikigai: ${result}</h2>`;
+            } else {
+                document.getElementById('result').innerHTML = `<h2>No result found.</h2>`;
+            }
+        });
+
+        function goBack() {
+            window.history.back(); // Go back to the previous page
+        }
+    </script>
+</body>
+</html>

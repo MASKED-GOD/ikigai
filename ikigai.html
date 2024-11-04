@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ikigai Finder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Find Your Ikigai</h1>
+        <form id="ikigaiForm" onsubmit="submitForm(event)">
+            <div class="form-group">
+                <label for="motivation">What motivates you?</label>
+                <select id="motivation" name="motivation" required>
+                    <option value="" disabled selected>Select your motivation</option>
+                    <option value="Helping others">Helping others</option>
+                    <option value="Achieving success">Achieving success</option>
+                    <option value="Creative expression">Creative expression</option>
+                    <option value="Learning new things">Learning new things</option>
+                    <option value="Solving problems">Solving problems</option>
+                    <option value="Exploring the world">Exploring the world</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="skill">What are your skills?</label>
+                <select id="skill" name="skill" required>
+                    <option value="" disabled selected>Select your skill</option>
+                    <option value="Communication">Communication</option>
+                    <option value="Analytical thinking">Analytical thinking</option>
+                    <option value="Leadership">Leadership</option>
+                    <option value="Craftsmanship">Craftsmanship</option>
+                    <option value="Empathy">Empathy</option>
+                    <option value="Creativity">Creativity</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="environment">What type of environment do you thrive in?</label>
+                <select id="environment" name="environment" required>
+                    <option value="" disabled selected>Select your environment</option>
+                    <option value="A structured and organized setting">A structured and organized setting</option>
+                    <option value="A fast-paced, challenging workplace">A fast-paced, challenging workplace</option>
+                    <option value="A creative and artistic space">A creative and artistic space</option>
+                    <option value="A supportive and collaborative team">A supportive and collaborative team</option>
+                    <option value="A flexible and independent work style">A flexible and independent work style</option>
+                    <option value="An outdoor, nature-oriented environment">An outdoor, nature-oriented environment</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="impact">What kind of impact do you want to have?</label>
+                <select id="impact" name="impact" required>
+                    <option value="" disabled selected>Select your impact</option>
+                    <option value="Making a difference">Making a difference</option>
+                    <option value="Innovating new technologies">Innovating new technologies</option>
+                    <option value="Promoting equality and justice">Promoting equality and justice</option>
+                    <option value="Fostering education and knowledge">Fostering education and knowledge</option>
+                    <option value="Protecting the environment">Protecting the environment</option>
+                    <option value="Creating beauty or art">Creating beauty or art</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="known_for">What are you known for?</label>
+                <select id="known_for" name="known_for" required>
+                    <option value="" disabled selected>Select your strength</option>
+                    <option value="Empathy">Empathy</option>
+                    <option value="Creativity">Creativity</option>
+                    <option value="Knowledge and expertise">Knowledge and expertise</option>
+                    <option value="Leadership and influence">Leadership and influence</option>
+                    <option value="Contributions to society">Contributions to society</option>
+                    <option value="Adventurous spirit">Adventurous spirit</option>
+                </select>
+            </div>
+
+            <button type="submit">Find My Ikigai</button>
+        </form>
+    </div>
+
+    <script>
+        function submitForm(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const formData = new FormData(document.getElementById('ikigaiForm'));
+            const data = Object.fromEntries(formData);
+
+            // Send data to the Flask backend using fetch
+            fetch('/predict', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Store the result in local storage and redirect
+                localStorage.setItem('ikigaiResult', data.ikigai);
+                window.location.href = 'result.html'; // Redirect to the result page
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Sorry, something went wrong.'); // Show an alert message
+            });
+        }
+    </script>
+</body>
+</html>
